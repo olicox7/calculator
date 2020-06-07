@@ -4,6 +4,8 @@ let currentOperator
 
 let result
 
+let storedOperator = null
+
 const operate = (operator,num1,num2) => {
     if(operator === "+") return add(num1,num2);
     if(operator === "-") return subtract(num1,num2);
@@ -13,8 +15,15 @@ const operate = (operator,num1,num2) => {
 }
 
 const storeVals = function() {
+    if(display.value == "") return
     if(depressedOperatorCheck()){
         return
+    }
+    if(storedOperator != null){
+        subTotal = operate(storedOperator, storedNum, displayValue);
+        storedNum = null
+        display.value = subTotal;
+        displayValue = subTotal;
     }
     this.classList.add("depressedOperator")
     storedNum = displayValue
@@ -28,6 +37,7 @@ const equalsOperation = () => {
     }
     result = operate(storedOperator, storedNum, displayValue);
     storedNum = null
+    storedOperator = null
     display.value = result;
     displayValue = result;
 }
