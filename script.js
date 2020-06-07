@@ -32,7 +32,9 @@ const storeVals = function() {
 }
 
 const equalsOperation = () => {
-    if(depressedOperatorCheck()){
+    if(depressedOperatorCheck() || display.value == "" || !storedOperator) return
+    if(displayValue === 0){
+        alert("You can't divide by 0, silly!")
         return
     }
     result = operate(storedOperator, storedNum, displayValue);
@@ -71,6 +73,8 @@ const numberToDisplay = function() {
 
 const equalsButton = document.querySelector("#equalsButton");
 
+const clearButton = document.querySelector("#cancelButton");
+
 numberButtons.forEach(button => button.addEventListener("click", numberToDisplay));
 
 operatorButtons.forEach(button => button.addEventListener("click", storeVals));
@@ -82,3 +86,8 @@ return depressedButton
 }
 
 equalsButton.addEventListener("click",equalsOperation);
+
+const clear = () => display.value = "";
+
+clearButton.addEventListener("click",clear);
+
