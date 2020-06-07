@@ -13,13 +13,21 @@ const operate = (operator,num1,num2) => {
 }
 
 const storeVals = function() {
+    if(depressedOperatorCheck()){
+        return
+    }
+    this.classList.add("depressedOperator")
     storedNum = displayValue
-    display.value = ""
     storedOperator = this.textContent
+    displayValue = null
 }
 
 const equalsOperation = () => {
+    if(depressedOperatorCheck()){
+        return
+    }
     result = operate(storedOperator, storedNum, displayValue);
+    storedNum = null
     display.value = result;
     displayValue = result;
 }
@@ -39,8 +47,13 @@ const numberButtons = document  .querySelectorAll(".numberButton");
 const operatorButtons = document .querySelectorAll(".operatorButton");
 
 const numberToDisplay = function() {
-    if (display.value == result) {
+    if(depressedOperatorCheck() != undefined){
+        let depressedButton = depressedOperatorCheck();
+        depressedButton.classList.remove("depressedOperator")
+    } 
+    if (display.value == result || displayValue == null) {
         display.value = "";
+        result = null;
     }
     display.value += this.textContent;
     displayValue = +display.value;
@@ -51,5 +64,11 @@ const equalsButton = document.querySelector("#equalsButton");
 numberButtons.forEach(button => button.addEventListener("click", numberToDisplay));
 
 operatorButtons.forEach(button => button.addEventListener("click", storeVals));
+
+const depressedOperatorCheck = () => {
+let operatorArray = Array.from(operatorButtons)
+let depressedButton = operatorArray.find(button => button.classList.contains("depressedOperator"))
+return depressedButton
+}
 
 equalsButton.addEventListener("click",equalsOperation);
